@@ -98,24 +98,14 @@ bool Heading_controller::attach(Sensor* s)
 {
     bool attached = false;
     
-    char* left_sensor_name = "LB";
-    char* right_sensor_name = "RB";
+    char* compass_name = "CP";
     
     //configure sensor handles
-    if(!strcmp(s->name(), left_sensor_name) ){
-       //cast the Sensor ptr as a Simple_bumper*
-        Simple_bumper* s_pointer = static_cast<Simple_bumper*>(s);
+    if(!strcmp(s->name(), compass_name) ){
+       //cast the Sensor ptr as a Compass*
+        Compass* s_pointer = static_cast<Compass*>(s);
        //then get a pointer to the right feedback object
-        lb_fb = s_pointer->feedback();       
-        sensors.push_back(s);
-        attached = true;
-    }
-	
-    if(!strcmp(s->name(), right_sensor_name) ){
-       //cast the Sensor ptr as a Simple_bumper*
-        Simple_bumper* s_pointer = static_cast<Simple_bumper*>(s);
-       //then get a pointer to the right feedback object
-        rb_fb = s_pointer->feedback();    
+        c_fb = s_pointer->feedback();       
         sensors.push_back(s);
         attached = true;
     }
@@ -135,9 +125,7 @@ bool Heading_controller::attach(Plant* p)
           Rover_plant* p_pointer = static_cast<Rover_plant*>(p);
          //then get a pointer to the right feedback object
           p_fb = p_pointer->feedback(); 
-
           plants.push_back(p);
-
           attached = true;
      }
 	    
@@ -160,10 +148,6 @@ void Heading_controller::update_state()
 void Heading_controller::config() 
 {
 	Serial.println(F("\nHeading controller config: "));
-	Serial.print(F("\tManuever state is: "));
-	Serial.println(man_state);
-	Serial.print(F("\tManuever time is: "));
-	Serial.println(mt);
 	Serial.print(F("\tSensors attached are: \n"));
 	for(int i=0; i<sensors.size(); i++){
 		Serial.print(F("\t\t"));
@@ -175,7 +159,6 @@ void Heading_controller::config()
 		Serial.println(plants[i]->name());
 	}
 	Serial.println(F("*** End Config ***"));
-	
 }
 
 //************************************************************************
@@ -201,16 +184,26 @@ int Heaing_controller::wrap(int heading, int tolerance, Wrap::dir wd)
 
 int delta(int current_Z) 
 {
-	int res = target_heading() - current_Z;
+	/*
+	*  Before making changes to this function, use the delta_test tool
+	*  in the /test directory to ensure you get expected results for 
+	*  in accordance with the notation that a negative delta indicates
+	*  current heading is left of target and a positive delta indicates
+	*  current heading is right of target.
+	*/
+	
+	int res = current_Z - target_heading();
 	
 	if (res < -180){
-		res = -(360 + res);
+		res = (360 + res);
+	}
+	
+	if (res > 180){
+		res = -(360 - res);
 	}
 	
 	return res;
 }
-
-
 
 
 
