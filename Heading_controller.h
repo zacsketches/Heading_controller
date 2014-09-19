@@ -65,7 +65,7 @@ private:
   int target;		//heading the controller is driving toward
   int upper_lim;
   int lower_lim;
-  int tol;	        //value plus or minus target that results in no control effort
+  int tol;	        //value plus or minus target that results in no control effort  
   
   // HELPER FUNCTIONS UNIQUE TO THIS CONTROLLER
   Control_vec set_control_vec();
