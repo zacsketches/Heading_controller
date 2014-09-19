@@ -75,19 +75,19 @@ Control_vec Heading_controller::set_control_vec()
 		res = Control::forward_easy;
 	}
 	
-    //if the heading is within ten degrees then ease to the target
-	if (dZ >-10 && dZ <(-1*tolerance()) ){
+    //if the heading is within 20 degrees then ease to the target
+	if (dZ >-20 && dZ <(-1*tolerance()) ){
 		res = Control::ease_right;
 	}
-	if (dZ <10 && dZ > tolerance() ){
+	if (dZ <20 && dZ > tolerance() ){
 		res = Control::ease_left;
 	}
 	
-	//if the heading is greater than or equal to ten degrees then swerve
-	if (dZ <= -10 ){
+	//if the heading is greater than or equal to 20 degrees then swerve
+	if (dZ <= -20 ){
 		res = Control::swerve_right;
 	}
-	if (dZ >= 10 ){
+	if (dZ >= 20 ){
 		res = Control::swerve_left;
 	}
 	
@@ -164,7 +164,7 @@ void Heading_controller::config()
 //************************************************************************
 //*                         HELPER FUNCTIONS
 //************************************************************************
-int Heaing_controller::wrap(int heading, int tolerance, Wrap::dir wd) 
+int Heading_controller::wrap(int heading, int tolerance, Wrap::dir wd) 
 {
 	int res = 0;
 	
@@ -176,13 +176,13 @@ int Heaing_controller::wrap(int heading, int tolerance, Wrap::dir wd)
 	} else {
 		res = heading - tolerance;
 		if (res <0) {
-			res = res + 360
+			res = res + 360;
 		}
 	}
 	return res;
 }
 
-int delta(int current_Z) 
+int Heading_controller::delta(int current_Z) 
 {
 	/*
 	*  Before making changes to this function, use the delta_test tool
@@ -199,7 +199,7 @@ int delta(int current_Z)
 	}
 	
 	if (res > 180){
-		res = -(360 - res);
+		res = -1 * (360 - res);
 	}
 	
 	return res;

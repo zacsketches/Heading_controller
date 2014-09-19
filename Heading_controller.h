@@ -1,5 +1,5 @@
-#ifndef HELEN_CONTROLLER_H
-#define HELEN_CONTROLLER_H SEP_2014
+#ifndef HEADING_CONTROLLER_H
+#define HEADING_CONTROLLER_H SEP_2014
 
 #include "Control_vec.h"
 
@@ -76,7 +76,7 @@ private:
 public:
     Heading_controller(int number_of_sensors, 
 		int number_of_plants, 
-		int _target_heading
+		int _target_heading,
 		int _tolerance);
 
     bool attach(Sensor* s); //PURE VIRTUAL FROM BASE
