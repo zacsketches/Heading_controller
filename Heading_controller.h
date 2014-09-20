@@ -65,7 +65,7 @@ private:
   int target;		//heading the controller is driving toward
   int upper_lim;
   int lower_lim;
-  int tol;	        //value plus or minus target that results in no control effort  
+  int tol;	        //value plus or minus target that results in no control effort 
   
   // HELPER FUNCTIONS UNIQUE TO THIS CONTROLLER
   Control_vec set_control_vec();
@@ -94,6 +94,8 @@ public:
 		lower_lim = wrap(new_target, tolerance(), Wrap::down);
 	}
 	int target_heading() {return target;}
+	int lower_limit() {return lower_lim;}
+	int upper_limit() {return upper_lim;}
 	
 	//get and set tolerance
 	void set_tolerance(int new_tolerance) {tol = new_tolerance;}

@@ -12,6 +12,7 @@ Heading_controller::Heading_controller(int number_of_sensors,
 {
 	upper_lim = wrap(target, tol, Wrap::up);
 	lower_lim = wrap(target, tol, Wrap::down);
+	
 }
 
 //*******************************************************************
@@ -67,7 +68,7 @@ Control_vec Heading_controller::set_control_vec()
 
 	res = Control::forward_easy;
 	
-	int current_Z = c_msg.heading;
+	int current_Z = c_msg.filtered_heading;
 	int dZ = delta(current_Z);
 	
 	//if the heading is within tolerance do nothing
@@ -158,6 +159,12 @@ void Heading_controller::config()
 		Serial.print(F("\t\t"));
 		Serial.println(plants[i]->name());
 	}
+	Serial.print(F("\tTarget heading is: "));
+	Serial.println(target_heading());
+	Serial.print(F("\tUpper limit is: "));
+	Serial.println(upper_limit());
+	Serial.print(F("\tLower limit is: "));
+	Serial.println(lower_limit());
 	Serial.println(F("*** End Config ***"));
 }
 
